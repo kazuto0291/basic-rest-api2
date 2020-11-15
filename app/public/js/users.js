@@ -24,6 +24,7 @@ const usersModule =(() => {
                         <td>${user.date_of_birth}</td>
                         <td>${user.created_at}</td>
                         <td>${user.updated_at}</td>
+                        <td><a href="edit.html?uid=${user.id}">編集</a></td>
                       </tr>`
         document.getElementById('users-list').insertAdjacentHTML('beforeend', body)
       }
@@ -53,6 +54,18 @@ const usersModule =(() => {
       // runメソッドのmessagenの中身を表示
       alert(resJson.message)
       window.location.href = "/"
+    },
+    setExistingValue: async (uid) => {
+      // fetchメソッドでGETリクエストを投げる(GETなのでパラメータの指定はしない)・・resでレスポンスを受け取る
+      const res = await fetch(BASE_URL + "/" + uid)
+
+      // 帰ってきたレスポンスのJSONをjsのオブジェクトにして受け取る
+      const resJson = await res.json()
+
+      // edit.htmlの各inputタグのvalueに受け取ったJSONの値を代入
+      document.getElementById('name').value = resJson.name
+      document.getElementById('profile').value =resJson.profile
+      document.getElementById('date-of-birth').value = resJson.date_of_birth
     },
     saveUser: async (uid) => {
       const name = document.getElementById('name').value

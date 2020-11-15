@@ -21,6 +21,22 @@ const indexModule = (() => {
       })
       break;
 
+    case '/edit.html':
+      const uid = window.location.search.split('?uid=')[1]
+
+      document.getElementById('save-btn').addEventListener('click', () => {
+        return usersModule.saveUser(uid)
+      })
+      document.getElementById('cancel-btn').addEventListener('click', ()=> {
+        return window.location.href = '/'
+      })
+      document.getElementById('delete-btn').addEventListener('click', ()=> {
+        return usersModule.deleteUser(uid)
+      })
+
+      //returnすることで edit.html を読み込んだあとにイベントリスナーを設定してそのまま既存ユーザー情報を取得してきてinputタグに設定する
+      return usersModule.setExistingValue(uid)
+
     default:
       break;//デフォルトは何もしません。
   }

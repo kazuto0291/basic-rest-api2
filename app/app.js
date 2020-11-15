@@ -10,6 +10,7 @@ const dbPath = "app/db/database.sqlite3"
 app.use(bodyParser.urlencoded({extended: true}))
 app.use(bodyParser.json())
 
+// publicディレクトリを静的ファイル群のルートディレクトリとして設定
 app.use(express.static(path.join(__dirname, 'public')))
 
 // Get all users
@@ -122,6 +123,39 @@ app.delete(`/api/v1/users/:id`, async (req, res) => {
   )
   db.close
 })
+
+
+// ========================
+// Create a new user
+app.post('/api/v2/users', async (req, res) => {
+  // Connect database
+  const db =new sqlite3.Database(dbPath)
+
+  const name = req.body.name
+  const profile =req.body.profile ? req.body.profile : ""
+  const dateOfBirth = req.body.date_of_birth ? req.body.date_of_birth : ""
+
+  const run = async (sql) => {
+    return new Promise((resolve, reject) => {
+      db.run(sql, (err) => {
+        if(err) {
+          res.status(500).send(err)
+          return reject()
+        } else {
+          res.json({message: "新規ユーザーを作成しました"})
+          return resolve()
+        }
+      })
+    })
+  }
+
+  await run(`INSERT INTO users (name, profile, date_of_birth) VALUES ("${name}","${profile}", "${dateOfBirth}")`)
+  db.close()
+})
+
+
+// 
+
 
 const port = process.env.PORT || 3000;
 app.listen(port)

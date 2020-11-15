@@ -2,6 +2,11 @@
 const usersModule =(() => {
   const BASE_URL = "http://localhost:3000/api/v1/users"
 
+  // ヘッダーの設定
+  const headers = new Headers()
+  // リクエストのbodyの中身がJSONの形で渡す指定をする宣言
+  headers.set("Content-Type", "application/json")
+
   return {
     fetchAllUsers: async () => {
       const res = await fetch(BASE_URL)
@@ -20,6 +25,32 @@ const usersModule =(() => {
                       </tr>`
         document.getElementById('users-list').insertAdjacentHTML('beforeend', body)
       }
+    },
+    createUser: async () => {
+      const name = document.getElementById("name").value
+      const profile = document.getElementById("profile").value
+      const dateOfBirth =document.getElementById("date-of-birth").value
+
+      // リクエストのbody・・jsnのオブジェクトの形
+      const body = {
+        name: name,
+        profile: profile,
+        date_of_birth: dateOfBirth
+      }
+
+      // fetchメソッドでリクエストを投げる レスポンスを受け取る
+      const res = await fetch(BASE_URL , {
+        method: "POST",
+        headers: headers,
+        body:JSON.stringify(body)  //jsのオブジェクトからJSONの形にする
+      })
+
+      // レスポンスの結果のJSONをjsオブジェクトの形にする
+      const resJson = await res.json()
+
+      // runメソッドのmessagenの中身を表示
+      alert(resJson.message)
+      window.location.href = "/"
     }
   }
 

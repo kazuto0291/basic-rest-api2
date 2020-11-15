@@ -33,7 +33,6 @@ const indexModule = (() => {
       document.getElementById('delete-btn').addEventListener('click', ()=> {
         return usersModule.deleteUser(uid)
       })
-
       //returnすることで edit.html を読み込んだあとにイベントリスナーを設定してそのまま既存ユーザー情報を取得してきてinputタグに設定する
       return usersModule.setExistingValue(uid)
 

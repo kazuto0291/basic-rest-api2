@@ -1,0 +1,6 @@
+get     /api/v1/users/:id/following  "フォローしているユーザーリスト情報"
+get     /api/v1/users/:id/following/:id  "フォローしているユーザー情報の取得"
+post    /api/v1/users/:id/following/:id  "フォローする"
+DELETE  /api/v1/users/:id/following/:id  "フォロー解除”
+get     /api/v1/users/:id/followers     "フォロワーリストの取得"
+get     /api/v1/users/:id/followers/:id  "フォロワー情報の取得"

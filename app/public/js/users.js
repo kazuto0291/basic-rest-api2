@@ -9,6 +9,41 @@ const usersModule =(() => {
   // リクエストのbodyの中身がJSONの形で渡す指定をする宣言
   headers.set("Content-Type", "application/json")
 
+  const handleError = async(res) => {
+    // レスポンスの結果のJSONをjsオブジェクトの形にする
+    const resJson = await res.json()
+
+    switch (res.status) {
+      case 200:
+        alert(resJson.messge)
+        window.location.href = "/"
+        break;
+      case 201:
+        alert(resJson.messge)
+        window.location.href = "/"
+        break;
+      case 400:
+        // リクエストのパラメーター間違い
+        alert(resJson.error)
+        break;
+        // 指定したリソースが見つからない
+      case 404:
+        alert(resJson.error)
+        break;
+      case 500:
+        // サーバーの内部エラー
+        alert(resJson.error)
+        break;
+      default:
+        alert("何らかのエラーが発生しました")
+        break;
+    }
+
+    //runメソッドのmessagenの中身を表示
+    alert(resJson.message)
+    window.location.href = "/"
+  }
+
   return {
     fetchAllUsers: async () => {
       const res = await fetch(BASE_URL)
@@ -48,12 +83,12 @@ const usersModule =(() => {
         body:JSON.stringify(body)  //jsのオブジェクトからJSON文字列の形にする
       })
 
-      // レスポンスの結果のJSONをjsオブジェクトの形にする
-      const resJson = await res.json()
-
-      // runメソッドのmessagenの中身を表示
-      alert(resJson.message)
-      window.location.href = "/"
+      // // レスポンスの結果のJSONをjsオブジェクトの形にする
+      // const resJson = await res.json()
+      // // runメソッドのmessagenの中身を表示
+      // alert(resJson.message)
+      // window.location.href = "/"
+      return handleError(res)
     },
     setExistingValue: async (uid) => {
       // fetchメソッドでGETリクエストを投げる(GETなのでパラメータの指定はしない)・・resでレスポンスを受け取る
@@ -87,9 +122,10 @@ const usersModule =(() => {
       })
 
       //レスポンスの結果のJSONをjsオブジェクトの形にする
-      const resJson = await res.json()
-      alert(resJson.message)
-      window.location.href = "/"
+      // const resJson = await res.json()
+      // alert(resJson.message)
+      // window.location.href = "/"
+      return handleError(res)
     },
     deleteUser: async (uid) => {
       const ret = window.confirm('このユーザーを削除しますか？')
@@ -102,9 +138,10 @@ const usersModule =(() => {
           headers: headers
         })
 
-        const resJson = await res.json()
-        alert(resJson.message)
-        window.location.href = '/'
+        // const resJson = await res.json()
+        // alert(resJson.message)
+        // window.location.href = '/'
+        return handleError(res)
       }
     }
   }

@@ -88,8 +88,6 @@ app.post('/api/v1/users', async (req, res) => {
     } catch (e) {
       res.status(500).send({error: e})
     }
-
-  
     db.close()
   }
 })
@@ -141,10 +139,7 @@ app.delete(`/api/v1/users/:id`, async (req, res) => {
       res.status(404).send({error: "指定されてたユーザーが見つかりません。"})
     } else {
       try {
-        await run(
-          `DELETE FROM users WHERE id=${id}`
-          ,db
-        )
+        await run(`DELETE FROM users WHERE id=${id}`,db)
           res.status(200).send({message: "ユーザー情報を削除しました。"})
       } catch (e) {
         res.status(500).send({error: e})

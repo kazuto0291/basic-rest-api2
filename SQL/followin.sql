@@ -18,3 +18,12 @@ VALUES
 (2,3),
 (3,4),
 (4,3);
+
+SELECT *
+          FROM following as f
+          LEFT JOIN users as u
+          ON f.followed_id =u.id
+          WHERE following_id = 1
+          AND followed_id = 2
+
+INSERT INTO following (following_id, followed_id) VALUES (1,15);

@@ -267,7 +267,24 @@ app.get('/api/v1/users/:id/following/:fid', (req, res) => {
           db.close()
 })
 
-
+// Create user following
+app.post('/api/v1/users/:id/following/:fid', async (req, res) => {
+  // Connect database
+  const db = new sqlite3.Database(dbPath)
+  const following_id =req.params.id
+  const followed_id =req.params.fid
+  
+  try {
+    await run(
+      `INSERT INTO following (following_id, followed_id) VALUES (${following_id},${followed_id})`
+      ,db
+    )
+    res.status(201).send({message:"フォロしました。"})
+  } catch (e) {
+    res.status(500).send({error: e})
+  }
+  db.close()
+})
 
 
 const port = process.env.PORT || 3000;

@@ -243,6 +243,30 @@ app.get('/api/v1/users/:id/following', (req, res) => {
           db.close()
 })
 
+// GET a following user
+app.get('/api/v1/users/:id/following/:fid', (req, res) => {
+  // Connect database
+  const db = new sqlite3.Database(dbPath)
+  const id = req.params.id
+  console.log(req.params)
+  console.log(req.params.fid)
+  const followed_id = req.params.fid
+
+  db.get(`SELECT *
+          FROM following as f
+          LEFT JOIN users as u
+          ON f.followed_id =u.id
+          WHERE following_id = ${id}
+          AND followed_id = ${followed_id}`, (err,row) => {
+            if (!row) {
+              res.status(404).send({error: "Not Found!"})
+            } else {
+              res.status(200).json(row)
+            }
+          })
+          db.close()
+})
+
 
 
 
